@@ -14,6 +14,11 @@ const config: HardhatUserConfig = {
     deployer: 0,
     addr1: 1,
     addr2: 2,
+    tonAddress : {
+      default: 3,
+      titan: '0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2',
+      titangoerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa'
+    }
   },
   networks: {
     hardhat: {
