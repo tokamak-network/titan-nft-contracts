@@ -12,13 +12,13 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_) {
+    constructor (string memory name_, string memory symbol_, address ownerAddress) {
         assert(
             IMPLEMENTATION_SLOT ==
                 bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1)
         );
 
-        _owner = msg.sender;
+        _owner = ownerAddress;
 
         _name = name_;
         _symbol = symbol_;
@@ -29,7 +29,7 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
         _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
 
-        emit OwnershipTransferred(address(0), msg.sender);
+        emit OwnershipTransferred(address(0), ownerAddress);
     }
 
     // function renounceOwnership() public virtual onlyOwner {

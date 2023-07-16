@@ -100,7 +100,7 @@ contract TitanNFTStorage is ERC165P {
     }
 
     modifier ifFree {
-        require(_lock == true, "in use");
+        require(_lock != true, "in use");
         _lock = true;
         _;
         _lock = false;

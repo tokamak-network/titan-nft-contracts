@@ -16,11 +16,22 @@ import "./ProxyBase.sol";
  * @title ERC721 Non-Fungible Token Standard basic implementation
  * @dev see https://eips.ethereum.org/EIPS/eip-721
  */
-contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerable {
+contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerable {
     // using SafeMath for uint256;
     using Address for address;
     using Strings for uint256;
     using Counters for Counters.Counter;
+
+    constructor (string memory name_, string memory symbol_, address ownerAddress) {
+        _owner = ownerAddress;
+
+        _name = name_;
+        _symbol = symbol_;
+        // register the supported interfaces to conform to ERC721 via ERC165
+        _registerInterface(_INTERFACE_ID_ERC721);
+        _registerInterface(_INTERFACE_ID_ERC721_METADATA);
+        _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
+    }
 
     function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyOwner ifFree virtual {
        _setTokenURI(tokenId, _tokenURI);
