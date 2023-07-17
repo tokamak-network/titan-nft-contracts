@@ -22,6 +22,8 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     using Strings for uint256;
     using Counters for Counters.Counter;
 
+    event SetAttribute(uint256 tokenId, bytes attribute);
+
     constructor (string memory name_, string memory symbol_, address ownerAddress) {
         _owner = ownerAddress;
 
@@ -61,6 +63,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         _safeMint(to, tokenId);
         _tokenURIs[tokenId] = tokenId.toString();
         _tokenAttributes[tokenId] = attribute;
+        emit SetAttribute(tokenId, attribute);
     }
 
     function multiMint(uint256[] memory tokenIds, bytes[] memory attributes, address to) external onlyOwner ifFree {
@@ -69,6 +72,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
             _safeMint(to, tokenIds[i]);
             _tokenURIs[tokenIds[i]] = tokenIds[i].toString();
             _tokenAttributes[tokenIds[i]] = attributes[i];
+            emit SetAttribute(tokenIds[i], attributes[i]);
         }
     }
 
@@ -534,6 +538,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     function _setAttribute(uint256 tokenId, bytes memory _attribute) internal virtual {
         require(_exists(tokenId), "TitanNFT: URI set of nonexistent token");
         _tokenAttributes[tokenId] = _attribute;
+        emit SetAttribute(tokenId, _attribute);
     }
 
     /**
