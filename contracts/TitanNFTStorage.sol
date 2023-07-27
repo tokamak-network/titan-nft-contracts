@@ -23,6 +23,8 @@ contract TitanNFTStorage is ERC165P {
     // Token symbol
     string public _symbol;
 
+    uint256 public maxId;
+
     // Optional mapping for token URIs
     mapping (uint256 => string) public _tokenURIs;
 

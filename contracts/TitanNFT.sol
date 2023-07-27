@@ -24,11 +24,12 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
 
     event SetAttribute(uint256 tokenId, bytes attribute);
 
-    constructor (string memory name_, string memory symbol_, address ownerAddress) {
+    constructor (string memory name_, string memory symbol_, address ownerAddress, uint256 _maxId) {
         _owner = ownerAddress;
 
         _name = name_;
         _symbol = symbol_;
+        maxId = _maxId;
         // register the supported interfaces to conform to ERC721 via ERC165
         _registerInterface(_INTERFACE_ID_ERC721);
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
@@ -60,6 +61,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     /*** External ***/
 
     function mint(uint256 tokenId, bytes memory attribute, address to) external onlyOwner ifFree {
+        require(tokenId <= maxId, "not allowed tokenId");
         _safeMint(to, tokenId);
         _tokenURIs[tokenId] = tokenId.toString();
         _tokenAttributes[tokenId] = attribute;
@@ -69,6 +71,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     function multiMint(uint256[] memory tokenIds, bytes[] memory attributes, address to) external onlyOwner ifFree {
         require(tokenIds.length != 0 && tokenIds.length == attributes.length, "wrong length");
         for(uint256 i = 0; i < tokenIds.length; i++){
+            require(tokenIds[i] <= maxId, "not allowed tokenId");
             _safeMint(to, tokenIds[i]);
             _tokenURIs[tokenIds[i]] = tokenIds[i].toString();
             _tokenAttributes[tokenIds[i]] = attributes[i];

@@ -12,7 +12,7 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_, address ownerAddress) {
+    constructor (string memory name_, string memory symbol_, address ownerAddress, uint256 _maxId) {
         assert(
             IMPLEMENTATION_SLOT ==
                 bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1)
@@ -22,6 +22,7 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
 
         _name = name_;
         _symbol = symbol_;
+        maxId = _maxId;
         _lock = false;
 
         // register the supported interfaces to conform to ERC721 via ERC165
