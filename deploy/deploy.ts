@@ -1,10 +1,15 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
-
-// import TitanNFTProxyJson  from "../artifacts/contracts/TitanNFTProxy.sol/TitanNFTProxy.json"
 import { TitanNFTProxy } from '../typechain-types/contracts/TitanNFTProxy'
 import { FirstEvent } from '../typechain-types/contracts/FirstEvent.sol/FirstEvent'
+
+// titan goerli
+const recipientAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6';
+
+// titan
+// const recipientAddress = '';
+
 
 const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     console.log('deployL2 hre.network.config.chainId', hre.network.config.chainId)
@@ -17,19 +22,20 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
     const { deploy, deterministic } = hre.deployments;
 
     const nftTokenInfo = {
-        name: "TITAN NFT",
-        symbol: "TITAN"
+        name: "Titan NFTs",
+        symbol: "TITAN",
+        maxId : hre.ethers.BigNumber.from("100")
     }
 
     const FirstEventInfo = {
-        recipient: deployer,
+        recipient: recipientAddress,
         priceToken : tonAddress,
         priceAmount : hre.ethers.utils.parseEther("30")
     }
     //==== TitanNFT =================================
     const TitanNFTDeployment = await deploy("TitanNFT", {
         from: deployer,
-        args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer],
+        args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer, nftTokenInfo.maxId],
         log: true,
         deterministicDeployment: true,
     });
@@ -39,7 +45,7 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
     //==== TitanNFTProxy =================================
     const TitanNFTProxyDeployment = await deploy("TitanNFTProxy", {
         from: deployer,
-        args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer],
+        args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer, nftTokenInfo.maxId],
         log: true,
         deterministicDeployment: true,
     });
@@ -85,6 +91,7 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
         await (await firstEvent.setPrice(FirstEventInfo.priceToken, FirstEventInfo.priceAmount)).wait()
     }
 
+    //  startTime 설정해야 합니다!!
 
     //==== verify =================================
 
