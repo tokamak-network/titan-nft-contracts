@@ -17,7 +17,8 @@ const config: HardhatUserConfig = {
     tonAddress : {
       default: 3,
       titan: '0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2',
-      titangoerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa'
+      titangoerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa',
+      goerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa'
     }
   },
   networks: {
@@ -30,6 +31,10 @@ const config: HardhatUserConfig = {
       deploy: ['deploy'],
       // gasMultiplier: 1.25,
       // gasPrice: 25000,
+    },
+    goerli: {
+      url: `${process.env.ETH_NODE_URI_GOERLI}`,
+      accounts: [`${process.env.PRIVATE_KEY}`]
     },
     titan: {
       url: `${process.env.ETH_NODE_URI_TITAN}`,
