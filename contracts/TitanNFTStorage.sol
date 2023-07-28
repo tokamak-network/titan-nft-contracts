@@ -95,7 +95,6 @@ contract TitanNFTStorage is ERC165P {
      */
     bytes4 public constant _INTERFACE_ID_ERC721_ENUMERABLE = 0x780e9d63;
 
-
     modifier onlyOwner() {
         require(_owner == msg.sender, "caller is not the owner");
         _;
