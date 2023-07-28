@@ -4,20 +4,14 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { TitanNFTProxy } from '../typechain-types/contracts/TitanNFTProxy'
 import { FirstEvent } from '../typechain-types/contracts/FirstEvent.sol/FirstEvent'
 
-// titan goerli
-const recipientAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6';
-
-// titan
-// const recipientAddress = '';
-
-
 const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     console.log('deployL2 hre.network.config.chainId', hre.network.config.chainId)
     console.log('deployL2 hre.network.name', hre.network.name)
 
-    const { deployer, tonAddress} = await hre.getNamedAccounts();
+    const { deployer, tonAddress, recipientAddress} = await hre.getNamedAccounts();
     console.log('deployer', deployer)
     console.log('tonAddress', tonAddress)
+    console.log('recipientAddress', recipientAddress)
 
     const { deploy, deterministic } = hre.deployments;
 

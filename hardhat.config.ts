@@ -19,6 +19,12 @@ const config: HardhatUserConfig = {
       titan: '0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2',
       titangoerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa',
       goerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa'
+    },
+    recipientAddress : {
+      default: 4,
+      titan: '0x0EAd220181Dd6816933Da2835B03eD8D7c66FD0a',
+      titangoerli: '0x0EAd220181Dd6816933Da2835B03eD8D7c66FD0a',
+      goerli: '0x0EAd220181Dd6816933Da2835B03eD8D7c66FD0a'
     }
   },
   networks: {
@@ -41,7 +47,7 @@ const config: HardhatUserConfig = {
       accounts: [`${process.env.PRIVATE_KEY}`],
       chainId: 55004,
       gasMultiplier: 1.25,
-      gasPrice: 1000000000,
+      gasPrice: 1000000,
     },
     titangoerli: {
       url: `${process.env.ETH_NODE_URI_TITAN_GOERLI}`,
