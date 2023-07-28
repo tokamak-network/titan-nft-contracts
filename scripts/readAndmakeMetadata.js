@@ -2,20 +2,22 @@ const fs = require("fs");
 var path = require("path");
 
 // for titangoerli
-var folder = "metadata/titangoerli"
-var imageDefault = "http://titan-nft.tokamak.network/titangoerli-images/"
+// var folder = "metadata/titangoerli"
+// var imageDefault = "https://titan-nft.tokamak.network/titangoerli-images/"
+
+// var imageDefault = "http://titan-nft.tokamak.network/titangoerli-images/"
 // metadata http://titan-nft.tokamak.network/titangoerli-metadata/
 
 // for titan
-// var folder = "metadata/titan"
-// var imageDefault = "http://titan-nft.tokamak.network/titan-images/"
+var folder = "metadata/titan"
+var imageDefault = "http://titan-nft.tokamak.network/titan-images/"
 // metadata http://titan-nft.tokamak.network/titan-metadata/
 
 function readData(data) {
 
     var rows = data.split("\n");
     let i = 0;
-    for (i = 0; i < 1; i++) {
+    for (i = 0; i < 100; i++) {
         var row = rows[i].split(",");
         // console.log(row)
 
@@ -29,8 +31,8 @@ function createMetadata(tokenId, name, grade, cardColor, cardBorder, logo, exter
     const jsonData = `{
         "name": "`+name+`",
         "description": "Only 100 Limited edition NFTs to celebrate the opening of Titan L2",
+        "external_url": "https://titan.tokamak.network",
         "image": "`+imageDefault+tokenId+`.png",
-        "external_url": "`+externalUrl+`",
         "publisher": "Tokamak Network",
         "attributes": [
             {
@@ -48,6 +50,10 @@ function createMetadata(tokenId, name, grade, cardColor, cardBorder, logo, exter
             {
                 "trait_type": "Logo",
                 "value": "`+logo+`"
+            },
+            {
+                "trait_type": "QRCode",
+                "value": "`+externalUrl+`"
             }
         ]
     }
@@ -67,7 +73,7 @@ const getCsvData = (filename) => {
 }
 
 async function main() {
-    let data = getCsvData("inputFile/TitanNFT2.csv")
+    let data = getCsvData("inputFile/TitanNFT.csv")
     readData(data)
 }
 

@@ -4,11 +4,10 @@ const fs = require("fs");
 
 const nftJson = require("../artifacts/contracts/TitanNFT.sol/TitanNFT.json")
 
-
 // for titangoerli
-const ownerAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6'
-const nftAddress = '0xa00Efd0856c449C4B02467A941E1Ec531618d9eB'
-const eventAddress = '0x63c95fbA722613Cb4385687E609840Ed10262434'
+// const ownerAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6'
+const nftAddress = '0xccbB97CC6346A77F060129B928051C24F7cd68BE'
+const eventAddress = '0x60154C996C7899d7Da8120f9E428a1E7749dc091'
 
 // for titan
 // const ownerAddress = ''
@@ -57,7 +56,7 @@ async function main() {
 
   const nftContract = (await ethers.getContractAt(nftJson.abi, nftAddress, deployer))
 
-  let data = getCsvData("inputFile/TitanNFT2.csv")
+  let data = getCsvData("inputFile/TitanNFT.csv")
   let metaData = readData(data)
   console.log(metaData.tokenIds)
   console.log(metaData.attributes)
