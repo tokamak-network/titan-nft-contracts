@@ -65,7 +65,6 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     function mint(uint256 tokenId, bytes memory attribute, address to) external onlyOwner ifFree {
         require(tokenId <= maxId, "not allowed tokenId");
         _safeMint(to, tokenId);
-        _tokenURIs[tokenId] = tokenId.toString();
         _tokenAttributes[tokenId] = attribute;
         emit SetAttribute(tokenId, attribute);
     }
@@ -75,7 +74,6 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         for(uint256 i = 0; i < tokenIds.length; i++){
             require(tokenIds[i] <= maxId, "not allowed tokenId");
             _safeMint(to, tokenIds[i]);
-            _tokenURIs[tokenIds[i]] = tokenIds[i].toString();
             _tokenAttributes[tokenIds[i]] = attributes[i];
             emit SetAttribute(tokenIds[i], attributes[i]);
         }
