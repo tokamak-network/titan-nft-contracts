@@ -134,7 +134,7 @@ contract FirstEvent is IERC721Receiver{
     /**** external ****/
 
     function purchase(uint256 tokenId)
-        external ifFree onSalePeriod nonZeroAddress(priceToken) nonZeroAddress(recipient) nonZero(priceAmount) onSalePeriod()
+        external ifFree onSalePeriod nonZeroAddress(priceToken) nonZeroAddress(recipient) nonZero(priceAmount)
     {
         require(IIERC721(nftAddress).ownerOf(tokenId) == address(this), "it' not mine");
         require(IIERC20(priceToken).allowance(msg.sender, address(this)) >= priceAmount,
