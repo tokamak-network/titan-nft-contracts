@@ -80,8 +80,8 @@ const config: HardhatUserConfig = {
         network: "titan",
         chainId: 55004,
         urls: {
-          apiURL: "https://explorer.titan.tokamak.network//api",
-          browserURL: "https://explorer.titan.tokamak.network/"
+          apiURL: "https://explorer.titan.tokamak.network/api",
+          browserURL: "https://explorer.titan.tokamak.network"
         }
       },
       {

@@ -15,6 +15,8 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
 
     const { deploy, deterministic } = hre.deployments;
 
+    //==== set parameters =================================
+
     const nftTokenInfo = {
         name: "Titan NFTs",
         symbol: "TITAN",
@@ -26,6 +28,7 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
         priceToken : tonAddress,
         priceAmount : hre.ethers.utils.parseEther("30")
     }
+
     //==== TitanNFT =================================
     const TitanNFTDeployment = await deploy("TitanNFT", {
         from: deployer,
@@ -85,7 +88,7 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
         await (await firstEvent.setPrice(FirstEventInfo.priceToken, FirstEventInfo.priceAmount)).wait()
     }
 
-    //  startTime 설정해야 합니다!!
+    //  setBaseURI, startTime 설정해야 합니다!!
 
     //==== verify =================================
 
