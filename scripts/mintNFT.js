@@ -6,8 +6,8 @@ const nftJson = require("../artifacts/contracts/TitanNFT.sol/TitanNFT.json")
 
 // for titangoerli
 // const ownerAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6'
-const nftAddress = '0xccbB97CC6346A77F060129B928051C24F7cd68BE'
-const eventAddress = '0x60154C996C7899d7Da8120f9E428a1E7749dc091'
+const nftAddress = '0x91a3506F9E0546B6ba88012A07449cBb86926Cd4'
+const eventAddress = '0xdfB390817062d4491547e161127c4cB2cE467920'
 
 // for titan
 // const ownerAddress = ''
@@ -30,7 +30,7 @@ function readData(data) {
   let attributes = [];
 
   let ret = {tokenIds: null, attributes: null}
-  for (i = 50; i < 100; i++) {
+  for (i = 2; i < 50; i++) {
       var row = rows[i].split(",");
       if(row.length > 7) {
         tokenIds.push(ethers.BigNumber.from(row[0].trim()))
