@@ -121,10 +121,16 @@ contract TitanNFTStorage is ERC165P {
         _;
     }
 
+    modifier onlyBridge() {
+        require(msg.sender == BRIDGE, "OptimismMintableERC721: only bridge can call this function");
+        _;
+    }
+
     modifier ifFree {
         require(_lock != true, "in use");
         _lock = true;
         _;
         _lock = false;
     }
+
 }

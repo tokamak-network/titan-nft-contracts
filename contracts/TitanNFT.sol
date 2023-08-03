@@ -25,6 +25,8 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     using Counters for Counters.Counter;
 
     event SetAttribute(uint256 tokenId, bytes attribute);
+    event Mint(address to, uint256 tokenId);
+    event Burn(address from, uint256 tokenId);
 
     function setBaseURI(string memory baseURI_) public onlyManager ifFree virtual {
        _setBaseURI(baseURI_);
@@ -55,7 +57,6 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     /*** External ***/
 
     function mint(uint256 tokenId, bytes memory attribute, address to) external onlyManager ifFree {
-        require(tokenId != 0 && tokenId <= MAX_ID, "not allowed tokenId");
         _safeMint(to, tokenId);
         _tokenAttributes[tokenId] = attribute;
         emit SetAttribute(tokenId, attribute);
@@ -64,11 +65,24 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
     function multiMint(uint256[] memory tokenIds, bytes[] memory attributes, address to) external onlyManager ifFree {
         require(tokenIds.length != 0 && tokenIds.length == attributes.length, "wrong length");
         for(uint256 i = 0; i < tokenIds.length; i++){
-            require(tokenIds[i] != 0 && tokenIds[i] <= MAX_ID, "not allowed tokenId");
             _safeMint(to, tokenIds[i]);
             _tokenAttributes[tokenIds[i]] = attributes[i];
             emit SetAttribute(tokenIds[i], attributes[i]);
         }
+    }
+
+    function safeMint(address _to, uint256 _tokenId) external virtual onlyBridge {
+        require(BRIDGE != address(0), "BRIDGE is zero address");
+        _safeMint(_to, _tokenId);
+
+        emit Mint(_to, _tokenId);
+    }
+
+    function burn(address _from, uint256 _tokenId) external virtual onlyBridge{
+        require(BRIDGE != address(0), "BRIDGE is zero address");
+        _burn(_from, _tokenId);
+
+        emit Burn(_from, _tokenId);
     }
 
     /*** Public ***/
@@ -142,6 +156,18 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
 
     function manager() public view virtual returns (address) {
         return _manager;
+    }
+
+    function remoteChainId() external view returns (uint256) {
+        return REMOTE_CHAIN_ID;
+    }
+
+    function remoteToken() external view returns (address) {
+        return REMOTE_TOKEN;
+    }
+
+    function bridge() external view returns (address) {
+        return BRIDGE;
     }
 
     /**
@@ -376,6 +402,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
      * forwarded in {IERC721Receiver-onERC721Received} to contract recipients.
      */
     function _safeMint(address to, uint256 tokenId, bytes memory _data) internal virtual {
+        require(tokenId != 0 && tokenId <= MAX_ID, "not allowed tokenId");
         _mint(to, tokenId);
 
         _addTokenToOwnerEnumeration(to, tokenId);
