@@ -8,21 +8,25 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
 {
     event Upgraded(address indexed implementation);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event ManagershipTransferred(address indexed previousManager, address indexed newManager);
 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_, address ownerAddress, uint256 _maxId) {
+    constructor (string memory name_, string memory symbol_,
+        address ownerAddress,
+        address managerAddress
+        ) {
+
         assert(
             IMPLEMENTATION_SLOT ==
                 bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1)
         );
 
         _owner = ownerAddress;
-
+        _manager = managerAddress;
         _name = name_;
         _symbol = symbol_;
-        maxId = _maxId;
         _lock = false;
 
         // register the supported interfaces to conform to ERC721 via ERC165
@@ -33,15 +37,26 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
         emit OwnershipTransferred(address(0), ownerAddress);
     }
 
-    // function renounceOwnership() public virtual onlyOwner {
-    //     emit OwnershipTransferred(_owner, address(0));
-    //     _owner = address(0);
-    // }
+    function renounceOwnership() public virtual onlyOwner {
+        emit OwnershipTransferred(_owner, address(0));
+        _owner = address(0);
+    }
 
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        require(newOwner != address(0), "new owner is the zero address");
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
+    }
+
+    function renounceManagership() public virtual onlyManager {
+        emit ManagershipTransferred(_manager, address(0));
+        _manager = address(0);
+    }
+
+    function transferManagership(address newManager) public virtual onlyManager {
+        require(newManager != address(0), "new manager is the zero address");
+        emit ManagershipTransferred(_manager, newManager);
+        _manager = newManager;
     }
 
     /// @notice Set pause state

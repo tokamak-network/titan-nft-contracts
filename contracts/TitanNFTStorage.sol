@@ -14,16 +14,32 @@ contract TitanNFTStorage is ERC165P {
     // Equals to `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
     // which can be also obtained as `IERC721Receiver(0).onERC721Received.selector`
     bytes4 public constant _ERC721_RECEIVED = 0x150b7a02;
+    uint256 public constant MAX_ID = 100;
+
+    //=====================
+    // Semver
+    // Contract version number (major).
+    uint256 public MAJOR_VERSION;
+    // Contract version number (minor).
+    uint256 public MINOR_VERSION;
+    // Contract version number (patch).
+    uint256 public PATCH_VERSION;
+
+    //=====================
+    // OptimismMintableERC721
+    uint256 public REMOTE_CHAIN_ID;
+    address public REMOTE_TOKEN;
+    address public BRIDGE;
+    //=====================
 
     address public _owner;
+    address public _manager;
 
     // Token name
     string public _name;
 
     // Token symbol
     string public _symbol;
-
-    uint256 public maxId;
 
     // Optional mapping for token URIs
     mapping (uint256 => string) public _tokenURIs;
@@ -97,6 +113,11 @@ contract TitanNFTStorage is ERC165P {
 
     modifier onlyOwner() {
         require(_owner == msg.sender, "caller is not the owner");
+        _;
+    }
+
+    modifier onlyManager() {
+        require(_manager == msg.sender, "caller is not the manager");
         _;
     }
 

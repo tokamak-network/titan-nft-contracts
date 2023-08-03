@@ -26,53 +26,45 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
 
     event SetAttribute(uint256 tokenId, bytes attribute);
 
-    constructor (string memory name_, string memory symbol_, address ownerAddress, uint256 _maxId) {
-        _owner = ownerAddress;
-
-        _name = name_;
-        _symbol = symbol_;
-        maxId = _maxId;
-        // register the supported interfaces to conform to ERC721 via ERC165
-        _registerInterface(_INTERFACE_ID_ERC721);
-        _registerInterface(_INTERFACE_ID_ERC721_METADATA);
-        _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
+    function setBaseURI(string memory baseURI_) public onlyManager ifFree virtual {
+       _setBaseURI(baseURI_);
     }
 
-    function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyOwner ifFree virtual {
+    function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyManager ifFree virtual {
        _setTokenURI(tokenId, _tokenURI);
     }
 
-    function setTokenURI(uint256[] memory tokenIds, string[] memory _tokenURIs) public onlyOwner ifFree virtual {
+    function setTokenURI(uint256[] memory tokenIds, string[] memory _tokenURIs) public onlyManager ifFree virtual {
         require(tokenIds.length != 0 && tokenIds.length == _tokenURIs.length, "wrong length");
         for(uint256 i = 0; i < tokenIds.length; i++){
             _setTokenURI(tokenIds[i], _tokenURIs[i]);
         }
     }
 
-    function setAttribute(uint256 tokenId, bytes memory _attribute) public onlyOwner ifFree virtual {
-       _setAttribute(tokenId, _attribute);
-    }
+    // function setAttribute(uint256 tokenId, bytes memory _attribute) public onlyManager ifFree virtual {
+    //    _setAttribute(tokenId, _attribute);
+    // }
 
-    function setAttributes(uint256[] memory tokenIds, bytes[] memory _attributes) public onlyOwner ifFree virtual {
-        require(tokenIds.length != 0 && tokenIds.length == _attributes.length, "wrong length");
-        for(uint256 i = 0; i < tokenIds.length; i++){
-            _setAttribute(tokenIds[i], _attributes[i]);
-        }
-    }
+    // function setAttributes(uint256[] memory tokenIds, bytes[] memory _attributes) public onlyManager ifFree virtual {
+    //     require(tokenIds.length != 0 && tokenIds.length == _attributes.length, "wrong length");
+    //     for(uint256 i = 0; i < tokenIds.length; i++){
+    //         _setAttribute(tokenIds[i], _attributes[i]);
+    //     }
+    // }
 
     /*** External ***/
 
-    function mint(uint256 tokenId, bytes memory attribute, address to) external onlyOwner ifFree {
-        require(tokenId <= maxId, "not allowed tokenId");
+    function mint(uint256 tokenId, bytes memory attribute, address to) external onlyManager ifFree {
+        require(tokenId != 0 && tokenId <= MAX_ID, "not allowed tokenId");
         _safeMint(to, tokenId);
         _tokenAttributes[tokenId] = attribute;
         emit SetAttribute(tokenId, attribute);
     }
 
-    function multiMint(uint256[] memory tokenIds, bytes[] memory attributes, address to) external onlyOwner ifFree {
+    function multiMint(uint256[] memory tokenIds, bytes[] memory attributes, address to) external onlyManager ifFree {
         require(tokenIds.length != 0 && tokenIds.length == attributes.length, "wrong length");
         for(uint256 i = 0; i < tokenIds.length; i++){
-            require(tokenIds[i] <= maxId, "not allowed tokenId");
+            require(tokenIds[i] != 0 && tokenIds[i] <= MAX_ID, "not allowed tokenId");
             _safeMint(to, tokenIds[i]);
             _tokenAttributes[tokenIds[i]] = attributes[i];
             emit SetAttribute(tokenIds[i], attributes[i]);
@@ -148,12 +140,22 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         return _owner;
     }
 
+    function manager() public view virtual returns (address) {
+        return _manager;
+    }
+
     /**
      * @dev Returns the address of the current owner.
      */
     function isOwner(address addr) public view virtual returns (bool) {
 
         if(_owner == addr) return true;
+        else return false;
+    }
+
+    function isManager(address addr) public view virtual returns (bool) {
+
+        if(_manager == addr) return true;
         else return false;
     }
 
@@ -319,6 +321,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         address owner_ = _tokenOwner[tokenId];
         return owner_ != address(0);
     }
+
     /**
      * @dev Returns whether `spender` is allowed to manage `tokenId`.
      *
@@ -551,10 +554,6 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
      */
     function _setBaseURI(string memory baseURI_) internal virtual {
         _baseURI = baseURI_;
-    }
-
-    function setBaseURI(string memory baseURI_) public onlyOwner virtual {
-       _setBaseURI(baseURI_);
     }
 
     /**
