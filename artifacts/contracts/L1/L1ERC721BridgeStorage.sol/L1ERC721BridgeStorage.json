@@ -1,0 +1,95 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "L1ERC721BridgeStorage",
+  "sourceName": "contracts/L1/L1ERC721BridgeStorage.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "MAJOR_VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MESSENGER",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MINOR_VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "OTHER_BRIDGE",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "PATCH_VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "__gap",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610133806100206000396000f3fe608060405234801561001057600080fd5b50600436106100725760003560e01c8063927ede2d11610050578063927ede2d146100d1578063c8b91531146100e4578063f786becd146100ed57600080fd5b80636bf2606a146100775780637f46ddb21461009357806381ee745b146100be575b600080fd5b61008060355481565b6040519081526020015b60405180910390f35b6001546100a6906001600160a01b031681565b6040516001600160a01b03909116815260200161008a565b6100806100cc36600461010d565b6100f6565b6000546100a6906001600160a01b031681565b61008060345481565b61008060335481565b6002816031811061010657600080fd5b0154905081565b60006020828403121561011f57600080fd5b503591905056fea164736f6c6343000809000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100725760003560e01c8063927ede2d11610050578063927ede2d146100d1578063c8b91531146100e4578063f786becd146100ed57600080fd5b80636bf2606a146100775780637f46ddb21461009357806381ee745b146100be575b600080fd5b61008060355481565b6040519081526020015b60405180910390f35b6001546100a6906001600160a01b031681565b6040516001600160a01b03909116815260200161008a565b6100806100cc36600461010d565b6100f6565b6000546100a6906001600160a01b031681565b61008060345481565b61008060335481565b6002816031811061010657600080fd5b0154905081565b60006020828403121561011f57600080fd5b503591905056fea164736f6c6343000809000a",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

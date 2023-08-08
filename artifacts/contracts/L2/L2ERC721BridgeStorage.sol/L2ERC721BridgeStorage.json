@@ -1,0 +1,124 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "L2ERC721BridgeStorage",
+  "sourceName": "contracts/L2/L2ERC721BridgeStorage.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "MAJOR_VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MESSENGER",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MINOR_VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "OTHER_BRIDGE",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "PATCH_VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "__gap",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "deposits",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b506101da806100206000396000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c806381ee745b1161005b57806381ee745b1461010d578063927ede2d14610120578063c8b9153114610133578063f786becd1461013c57600080fd5b80635d93a3fc146100825780636bf2606a146100cb5780637f46ddb2146100e2575b600080fd5b6100b6610090366004610178565b603660209081526000938452604080852082529284528284209052825290205460ff1681565b60405190151581526020015b60405180910390f35b6100d460355481565b6040519081526020016100c2565b6001546100f5906001600160a01b031681565b6040516001600160a01b0390911681526020016100c2565b6100d461011b3660046101b4565b610145565b6000546100f5906001600160a01b031681565b6100d460345481565b6100d460335481565b6002816031811061015557600080fd5b0154905081565b80356001600160a01b038116811461017357600080fd5b919050565b60008060006060848603121561018d57600080fd5b6101968461015c565b92506101a46020850161015c565b9150604084013590509250925092565b6000602082840312156101c657600080fd5b503591905056fea164736f6c6343000809000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007d5760003560e01c806381ee745b1161005b57806381ee745b1461010d578063927ede2d14610120578063c8b9153114610133578063f786becd1461013c57600080fd5b80635d93a3fc146100825780636bf2606a146100cb5780637f46ddb2146100e2575b600080fd5b6100b6610090366004610178565b603660209081526000938452604080852082529284528284209052825290205460ff1681565b60405190151581526020015b60405180910390f35b6100d460355481565b6040519081526020016100c2565b6001546100f5906001600160a01b031681565b6040516001600160a01b0390911681526020016100c2565b6100d461011b3660046101b4565b610145565b6000546100f5906001600160a01b031681565b6100d460345481565b6100d460335481565b6002816031811061015557600080fd5b0154905081565b80356001600160a01b038116811461017357600080fd5b919050565b60008060006060848603121561018d57600080fd5b6101968461015c565b92506101a46020850161015c565b9150604084013590509250925092565b6000602082840312156101c657600080fd5b503591905056fea164736f6c6343000809000a",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

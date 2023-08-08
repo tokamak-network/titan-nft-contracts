@@ -11,20 +11,18 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./TitanNFTStorage.sol";
-import "./ProxyBase.sol";
-
 
 /**
  * @title ERC721 Non-Fungible Token Standard basic implementation
  * @dev see https://eips.ethereum.org/EIPS/eip-721
  */
-contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerable {
+contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerable {
     // using SafeMath for uint256;
     using Address for address;
     using Strings for uint256;
     using Counters for Counters.Counter;
 
-    event SetAttribute(uint256 tokenId, bytes attribute);
+    event SetAttribute(uint256 tokenId, uint8 attribute);
     event Mint(address to, uint256 tokenId);
     event Burn(address from, uint256 tokenId);
 
@@ -43,26 +41,15 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         }
     }
 
-    // function setAttribute(uint256 tokenId, bytes memory _attribute) public onlyManager ifFree virtual {
-    //    _setAttribute(tokenId, _attribute);
-    // }
-
-    // function setAttributes(uint256[] memory tokenIds, bytes[] memory _attributes) public onlyManager ifFree virtual {
-    //     require(tokenIds.length != 0 && tokenIds.length == _attributes.length, "wrong length");
-    //     for(uint256 i = 0; i < tokenIds.length; i++){
-    //         _setAttribute(tokenIds[i], _attributes[i]);
-    //     }
-    // }
-
     /*** External ***/
 
-    function mint(uint256 tokenId, bytes memory attribute, address to) external onlyManager ifFree {
+    function mint(uint256 tokenId, uint8 attribute, address to) external onlyManager ifFree {
         _safeMint(to, tokenId);
         _tokenAttributes[tokenId] = attribute;
         emit SetAttribute(tokenId, attribute);
     }
 
-    function multiMint(uint256[] memory tokenIds, bytes[] memory attributes, address to) external onlyManager ifFree {
+    function multiMint(uint256[] memory tokenIds, uint8[] memory attributes, address to) external onlyManager ifFree {
         require(tokenIds.length != 0 && tokenIds.length == attributes.length, "wrong length");
         for(uint256 i = 0; i < tokenIds.length; i++){
             _safeMint(to, tokenIds[i]);
@@ -71,19 +58,19 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         }
     }
 
-    function safeMint(address _to, uint256 _tokenId) external virtual onlyBridge {
-        require(BRIDGE != address(0), "BRIDGE is zero address");
-        _safeMint(_to, _tokenId);
+    // function safeMint(address _to, uint256 _tokenId) external virtual onlyBridge {
+    //     require(BRIDGE != address(0), "BRIDGE is zero address");
+    //     _safeMint(_to, _tokenId);
 
-        emit Mint(_to, _tokenId);
-    }
+    //     emit Mint(_to, _tokenId);
+    // }
 
-    function burn(address _from, uint256 _tokenId) external virtual onlyBridge{
-        require(BRIDGE != address(0), "BRIDGE is zero address");
-        _burn(_from, _tokenId);
+    // function burn(address _from, uint256 _tokenId) external virtual onlyBridge{
+    //     require(BRIDGE != address(0), "BRIDGE is zero address");
+    //     _burn(_from, _tokenId);
 
-        emit Burn(_from, _tokenId);
-    }
+    //     emit Burn(_from, _tokenId);
+    // }
 
     /*** Public ***/
 
@@ -568,7 +555,7 @@ contract TitanNFT is ProxyBase, TitanNFTStorage, IERC721, IERC721Metadata, IERC7
         _tokenURIs[tokenId] = _tokenURI;
     }
 
-    function _setAttribute(uint256 tokenId, bytes memory _attribute) internal virtual {
+    function _setAttribute(uint256 tokenId, uint8 _attribute) internal virtual {
         require(_exists(tokenId), "TitanNFT: URI set of nonexistent token");
         _tokenAttributes[tokenId] = _attribute;
         emit SetAttribute(tokenId, _attribute);

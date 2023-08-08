@@ -29,8 +29,8 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
         priceAmount : hre.ethers.utils.parseEther("30")
     }
 
-    //==== TitanNFT =================================
-    const TitanNFTDeployment = await deploy("TitanNFT", {
+    //==== TitanNft =================================
+    const TitanNFTDeployment = await deploy("TitanNft", {
         from: deployer,
         args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer, nftTokenInfo.maxId],
         log: true,
@@ -39,8 +39,8 @@ const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnviro
 
     // console.log('TitanNFTDeployment', TitanNFTDeployment.address)
 
-    //==== TitanNFTProxy =================================
-    const TitanNFTProxyDeployment = await deploy("TitanNFTProxy", {
+    //==== TitanNftProxy =================================
+    const TitanNFTProxyDeployment = await deploy("TitanNftProxy", {
         from: deployer,
         args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer, nftTokenInfo.maxId],
         log: true,

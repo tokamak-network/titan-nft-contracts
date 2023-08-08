@@ -45,7 +45,7 @@ contract TitanNFTStorage is ERC165P {
     mapping (uint256 => string) public _tokenURIs;
 
     // attributes
-    mapping (uint256 => bytes) public _tokenAttributes;
+    mapping (uint256 => uint8) public _tokenAttributes;
 
     // Base URI
     string public _baseURI;
@@ -112,12 +112,12 @@ contract TitanNFTStorage is ERC165P {
     bytes4 public constant _INTERFACE_ID_ERC721_ENUMERABLE = 0x780e9d63;
 
     modifier onlyOwner() {
-        require(_owner == msg.sender, "caller is not the owner");
+        require(_owner == msg.sender, "not owner");
         _;
     }
 
     modifier onlyManager() {
-        require(_manager == msg.sender, "caller is not the manager");
+        require(_manager == msg.sender, "not manager");
         _;
     }
 

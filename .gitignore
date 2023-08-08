@@ -11,3 +11,5 @@ artifacts/@openzeppelin
 artifacts/build-info
 
 metadata
+.env
+backup/
