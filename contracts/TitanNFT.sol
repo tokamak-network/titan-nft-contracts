@@ -23,8 +23,6 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
     using Counters for Counters.Counter;
 
     event SetAttribute(uint256 tokenId, uint8 attribute);
-    event Mint(address to, uint256 tokenId);
-    event Burn(address from, uint256 tokenId);
 
     function setBaseURI(string memory baseURI_) public onlyManager ifFree virtual {
        _setBaseURI(baseURI_);
