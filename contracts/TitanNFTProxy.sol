@@ -36,23 +36,23 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
         emit OwnershipTransferred(address(0), ownerAddress);
     }
 
-    function renounceOwnership() public virtual onlyOwner {
+    function renounceOwnership() public onlyOwner {
         emit OwnershipTransferred(_owner, address(0));
         _owner = address(0);
     }
 
-    function transferOwnership(address newOwner) public virtual onlyOwner {
+    function transferOwnership(address newOwner) public onlyOwner {
         require(newOwner != address(0), "new owner is the zero address");
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
     }
 
-    function renounceManagership() public virtual onlyManager {
+    function renounceManagership() public onlyManager {
         emit ManagershipTransferred(_manager, address(0));
         _manager = address(0);
     }
 
-    function transferManagership(address newManager) public virtual onlyManager {
+    function transferManagership(address newManager) public onlyManager {
         require(newManager != address(0), "new manager is the zero address");
         emit ManagershipTransferred(_manager, newManager);
         _manager = newManager;
