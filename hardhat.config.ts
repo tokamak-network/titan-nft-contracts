@@ -16,7 +16,7 @@ const config: HardhatUserConfig = {
     addr2: 2,
     managerAddress : {
       default: 3,
-      titan: '0xc1eba383D94c6021160042491A5dfaF1d82694E6',
+      titan: '0x796C1f28c777b8a5851D356EBbc9DeC2ee51137F',
       titangoerli2: '0xc1eba383D94c6021160042491A5dfaF1d82694E6',
       goerli: '0xc1eba383D94c6021160042491A5dfaF1d82694E6'
     },
@@ -89,6 +89,7 @@ const config: HardhatUserConfig = {
       chainId: 55004,
       gasMultiplier: 1.25,
       gasPrice: 1000000,
+      deploy: ['deploy'],
     },
     titangoerli2: {
       url: `${process.env.ETH_NODE_URI_TITAN_GOERLI}`,
@@ -96,7 +97,7 @@ const config: HardhatUserConfig = {
       chainId: 5050,
       gasMultiplier: 1.25,
       gasPrice: 250000,
-      deploy: ['deploy_l2'],
+      deploy: ['deploy'],
     }
   },
   deterministicDeployment: (network: string) => {

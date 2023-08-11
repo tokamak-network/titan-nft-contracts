@@ -6,8 +6,8 @@ const nftJson = require("../artifacts/contracts/TitanNFT.sol/TitanNFT.json")
 
 // for titangoerli
 // const ownerAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6'
-const nftAddress = '0xF6C0C42a767DFfa1956373052dc53FF8f39c7974'
-const eventAddress = '0x1fe50E78E529e64bbf7239600244EF4dD356FcD3'
+const nftAddress = '0xA9108BBcdF8B16DAA3f1c4E8457219a9ED601213'
+const eventAddress = '0x0ED0B62c1F2C1C30c40fFDd32338F57A4d4C9213'
 
 // for titan
 // const ownerAddress = ''
@@ -15,12 +15,12 @@ const eventAddress = '0x1fe50E78E529e64bbf7239600244EF4dD356FcD3'
 // const eventAddress = ''
 
 
-function getBytesOfGrade(grade) {
-  if(grade == 'Titan') return '0x01'
-  else if(grade == 'Unique') return '0x02'
-  else if(grade == 'Rare') return '0x03'
-  else if(grade == 'Normal') return '0x04'
-  else return '0x00'
+function getAttributeOfGrade(grade) {
+  if(grade == 'Titan') return 1
+  else if(grade == 'Unique') return 2
+  else if(grade == 'Rare') return 3
+  else if(grade == 'Normal') return 4
+  else return 0
 }
 
 function readData(data) {
@@ -34,7 +34,7 @@ function readData(data) {
       var row = rows[i].split(",");
       if(row.length > 7) {
         tokenIds.push(ethers.BigNumber.from(row[0].trim()))
-        attributes.push(getBytesOfGrade(row[2].trim()))
+        attributes.push(getAttributeOfGrade(row[2].trim()))
       }
       else  console.log(i,' line error')
   }
@@ -58,8 +58,8 @@ async function main() {
 
   let data = getCsvData("inputFile/TitanNFT.csv")
   let metaData = readData(data)
-  console.log(metaData.tokenIds)
-  console.log(metaData.attributes)
+  // console.log(metaData.tokenIds)
+  // console.log(metaData.attributes)
 
   let tx = await nftContract.connect(deployer).multiMint(
     metaData.tokenIds,
