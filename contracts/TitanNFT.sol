@@ -141,9 +141,6 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
         return BRIDGE;
     }
 
-    /**
-     * @dev Returns the address of the current owner.
-     */
     function isOwner(address addr) public view virtual returns (bool) {
 
         if(_owner == addr) return true;
