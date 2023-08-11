@@ -27,7 +27,6 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
         _manager = managerAddress;
         _name = name_;
         _symbol = symbol_;
-        _lock = false;
 
         // register the supported interfaces to conform to ERC721 via ERC165
         _registerInterface(_INTERFACE_ID_ERC721);
