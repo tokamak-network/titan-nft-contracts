@@ -58,20 +58,6 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
         }
     }
 
-    // function safeMint(address _to, uint256 _tokenId) external virtual onlyBridge {
-    //     require(BRIDGE != address(0), "BRIDGE is zero address");
-    //     _safeMint(_to, _tokenId);
-
-    //     emit Mint(_to, _tokenId);
-    // }
-
-    // function burn(address _from, uint256 _tokenId) external virtual onlyBridge{
-    //     require(BRIDGE != address(0), "BRIDGE is zero address");
-    //     _burn(_from, _tokenId);
-
-    //     emit Burn(_from, _tokenId);
-    // }
-
     /*** Public ***/
 
     /**
@@ -360,7 +346,7 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
      */
     function _burn(address owner_, uint256 tokenId) internal virtual{
         require(ownerOf(tokenId) == owner_, "TitanNFT: burn of token that is not own");
-        _beforeTokenTransfer(owner_, address(0), tokenId);
+        // _beforeTokenTransfer(owner_, address(0), tokenId);
         _clearApproval(tokenId);
 
         _ownedTokensCount[owner_].decrement();
@@ -416,7 +402,7 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
         require(to != address(0), "TitanNFT: mint to the zero address");
         require(!_exists(tokenId), "TitanNFT: token already minted");
 
-        _beforeTokenTransfer(address(0), to, tokenId);
+        // _beforeTokenTransfer(address(0), to, tokenId);
 
         _tokenOwner[tokenId] = to;
         _ownedTokensCount[to].increment();
@@ -527,7 +513,7 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
         require(ownerOf(tokenId) == from, "ProjectToken: transfer of token that is not own");
         require(to != address(0), "ProjectToken: transfer to the zero address");
 
-        _beforeTokenTransfer(from, to, tokenId);
+        // _beforeTokenTransfer(from, to, tokenId);
 
         _clearApproval(tokenId);
 
@@ -600,24 +586,5 @@ contract TitanNFT is TitanNFTStorage, IERC721, IERC721Metadata, IERC721Enumerabl
     function _approve(address to, uint256 tokenId) private {
         _tokenApprovals[tokenId] = to;
         emit Approval(ownerOf(tokenId), to, tokenId); // internal owner
-    }
-
-    /**
-     * @dev Hook that is called before any token transfer. This includes minting
-     * and burning.
-     *
-     * Calling conditions:
-     *
-     * - When `from` and `to` are both non-zero, ``from``'s `tokenId` will be
-     * transferred to `to`.
-     * - When `from` is zero, `tokenId` will be minted for `to`.
-     * - When `to` is zero, ``from``'s `tokenId` will be burned.
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
-     *
-     * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
-     */
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual {
-
     }
 }
