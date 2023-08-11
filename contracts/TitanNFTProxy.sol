@@ -36,23 +36,23 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
         emit OwnershipTransferred(address(0), ownerAddress);
     }
 
-    function renounceOwnership() public onlyOwner {
+    function renounceOwnership() external onlyOwner {
         emit OwnershipTransferred(_owner, address(0));
         _owner = address(0);
     }
 
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) external onlyOwner {
         require(newOwner != address(0), "new owner is the zero address");
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
     }
 
-    function renounceManagership() public onlyManager {
+    function renounceManagership() external onlyManager {
         emit ManagershipTransferred(_manager, address(0));
         _manager = address(0);
     }
 
-    function transferManagership(address newManager) public onlyManager {
+    function transferManagership(address newManager) external onlyManager {
         require(newManager != address(0), "new manager is the zero address");
         emit ManagershipTransferred(_manager, newManager);
         _manager = newManager;
@@ -66,7 +66,7 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
 
     /// @notice Set implementation contract
     /// @param impl New implementation contract address
-    function upgradeTo(address impl) public  onlyOwner {
+    function upgradeTo(address impl) external  onlyOwner {
         require(impl != address(0), "ERC721Proxy: input is zero");
         require(_implementation() != impl, "ERC721Proxy: same");
         _setImplementation(impl);
@@ -74,7 +74,7 @@ contract TitanNFTProxy is ProxyBase, TitanNFTStorage
     }
 
     /// @dev returns the implementation
-    function implementation() public view  returns (address) {
+    function implementation() external view  returns (address) {
         return _implementation();
     }
 
