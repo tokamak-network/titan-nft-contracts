@@ -24,7 +24,7 @@ const config: HardhatUserConfig = {
       default: 4,
       titan: '0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2',
       titangoerli2: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa',
-      goerli: '0xFa956eB0c4b3E692aD5a6B2f08170aDE55999ACa'
+      goerli: '0x68c1F9620aeC7F2913430aD6daC1bb16D8444F00'
     },
     recipientAddress : {
       default: 5,
