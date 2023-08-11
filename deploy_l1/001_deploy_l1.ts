@@ -54,15 +54,12 @@ const deployL1: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
 
     console.log('logic', logic)
 
-
     //==== OptimismMintableERC721Factory  =================================
     const OptimismMintableERC721Factory_Deployment = await deploy("OptimismMintableERC721Factory", {
         from: deployer,
         args: [ l1ERC721BridgeProxy.address, remoteChainId],
         log: true
     });
-
-
 
     //==== verify =================================
     if (hre.network.name != "hardhat") {

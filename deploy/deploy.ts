@@ -1,106 +1,142 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
+import { TitanNFT } from '../typechain-types/contracts/TitanNFT'
 import { TitanNFTProxy } from '../typechain-types/contracts/TitanNFTProxy'
-import { FirstEvent } from '../typechain-types/contracts/FirstEvent.sol/FirstEvent'
+import { FirstEvent } from '../typechain-types/contracts/FirstEvent.sol'
 
-const deployTitanNFT: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployL2: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     console.log('deployL2 hre.network.config.chainId', hre.network.config.chainId)
     console.log('deployL2 hre.network.name', hre.network.name)
+    const { deployer, managerAddress, recipientAddress, tonAddress } = await hre.getNamedAccounts();
+    const { deploy } = hre.deployments;
 
-    const { deployer, tonAddress, recipientAddress} = await hre.getNamedAccounts();
-    console.log('deployer', deployer)
-    console.log('tonAddress', tonAddress)
-    console.log('recipientAddress', recipientAddress)
-
-    const { deploy, deterministic } = hre.deployments;
-
-    //==== set parameters =================================
-
-    const nftTokenInfo = {
-        name: "Titan NFTs",
+    // titan-goerli
+    let nftTokenInfo = {
+        name: "L2 Titan NFTs",
         symbol: "TITAN",
-        maxId : hre.ethers.BigNumber.from("100")
-    }
-
-    const FirstEventInfo = {
-        recipient: recipientAddress,
+        baseURI: "http://titan-nft.tokamak.network/titangoerli-metadata/",
         priceToken : tonAddress,
         priceAmount : hre.ethers.utils.parseEther("30")
     }
 
-    //==== TitanNft =================================
-    const TitanNFTDeployment = await deploy("TitanNft", {
+    // titan
+    // const nftTokenInfo = {
+    //     name: "L2 Titan NFTs",
+    //     symbol: "TITAN",
+    //     baseURI: "http://titan-nft.tokamak.network/titan-metadata/"
+    // }
+
+    const deploySigner = await hre.ethers.getSigner(deployer);
+    const managerSigner = await hre.ethers.getSigner(managerAddress);
+
+
+    //==== TitanNFT =================================
+    const TitanNFT_Deployment = await deploy("TitanNFT", {
         from: deployer,
-        args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer, nftTokenInfo.maxId],
-        log: true,
-        deterministicDeployment: true,
+        args: [],
+        log: true
     });
 
-    // console.log('TitanNFTDeployment', TitanNFTDeployment.address)
-
-    //==== TitanNftProxy =================================
-    const TitanNFTProxyDeployment = await deploy("TitanNftProxy", {
+    //==== TitanNFTProxy =================================
+    const TitanNFTProxy_Deployment = await deploy("TitanNFTProxy", {
         from: deployer,
-        args: [nftTokenInfo.name, nftTokenInfo.symbol, deployer, nftTokenInfo.maxId],
-        log: true,
-        deterministicDeployment: true,
+        args: [
+            nftTokenInfo.name,
+            nftTokenInfo.symbol,
+            deployer,
+            managerAddress
+        ],
+        log: true
     });
 
-    // console.log('TitanNFTProxyDeployment', TitanNFTProxyDeployment.address)
-    const proxy = (await hre.ethers.getContractAt(
-        TitanNFTProxyDeployment.abi,
-        TitanNFTProxyDeployment.address
+    const titanNFTProxy = (await hre.ethers.getContractAt(
+        TitanNFTProxy_Deployment.abi,
+        TitanNFTProxy_Deployment.address
     )) as TitanNFTProxy;
 
-    let logic = await proxy.implementation();
-    console.log('logic', logic)
-    if (logic != TitanNFTDeployment.address) {
-        await (await proxy.upgradeTo( TitanNFTDeployment.address)).wait()
-        let resetLogic = await proxy.implementation();
-        console.log('resetLogic', resetLogic)
+    const titanNFT = (await hre.ethers.getContractAt(
+        TitanNFT_Deployment.abi,
+        TitanNFTProxy_Deployment.address
+    )) as TitanNFT;
+
+    //==== TitanNFTProxy upgradeTo   =================================
+    let logicTitanNFTProxy = await titanNFTProxy.implementation()
+
+    if (logicTitanNFTProxy != TitanNFT_Deployment.address) {
+        await (await titanNFTProxy.connect(deploySigner).upgradeTo(TitanNFT_Deployment.address)).wait()
+    }
+    logicTitanNFTProxy = await titanNFTProxy.implementation()
+
+    console.log('TitanNFTProxy logic', logicTitanNFTProxy)
+
+    //==== TitanNFTProxy setBaseURI   =================================
+    let baseURI = await titanNFT.baseURI()
+    if (baseURI != nftTokenInfo.baseURI) {
+        await (await titanNFT.connect(managerSigner).setBaseURI(nftTokenInfo.baseURI)).wait()
     }
 
-
     //==== FirstEvent =================================
-    const FirstEventDeployment = await deploy("FirstEvent", {
+    const FirstEvent_Deployment = await deploy("FirstEvent", {
         from: deployer,
         args: [deployer],
-        log: true,
-        deterministicDeployment: true,
+        log: true
     });
 
     const firstEvent = (await hre.ethers.getContractAt(
-        FirstEventDeployment.abi,
-        FirstEventDeployment.address
+        FirstEvent_Deployment.abi,
+        FirstEvent_Deployment.address
     )) as FirstEvent;
 
-    let nftAddress = await firstEvent.nftAddress();
-    let recipient = await firstEvent.recipient();
+    //==== setAddress =================================
+    let nftAddress = await firstEvent.nftAddress()
 
-    if (nftAddress!= proxy.address || recipient != FirstEventInfo.recipient) {
-        await (await firstEvent.setAddress(proxy.address, FirstEventInfo.recipient)).wait()
+    if (nftAddress != titanNFTProxy.address) {
+        await (await firstEvent.connect(deploySigner).setAddress(
+            titanNFTProxy.address,
+            recipientAddress
+        )).wait()
     }
 
-    let priceToken = await firstEvent.priceToken();
-    let priceAmount = await firstEvent.priceAmount();
-    if (priceToken!= FirstEventInfo.priceToken || priceAmount != FirstEventInfo.priceAmount) {
-        await (await firstEvent.setPrice(FirstEventInfo.priceToken, FirstEventInfo.priceAmount)).wait()
+    //==== setPrice =================================
+    let priceToken = await firstEvent.priceToken()
+    if (priceToken != tonAddress) {
+        await (await firstEvent.connect(deploySigner).setPrice(
+            nftTokenInfo.priceToken,
+            nftTokenInfo.priceAmount
+        )).wait()
     }
-
-    //  setBaseURI, startTime 설정해야 합니다!!
 
     //==== verify =================================
+    if (hre.network.name != "hardhat") {
+        // await hre.run("etherscan-verify", {
+        //     network: hre.network.name
+        // });
 
-    // if (hre.network.name != "hardhat") {
-    //     await hre.run("etherscan-verify", {
-    //         network: hre.network.name
-    //     });
-    // }
-
+        await hre.run("verify:verify",{
+            address: TitanNFT_Deployment.address,
+            constructorArguments: [],
+            }
+        );
+        await hre.run("verify:verify",{
+            address: TitanNFTProxy_Deployment.address,
+            constructorArguments: [
+                nftTokenInfo.name,
+                nftTokenInfo.symbol,
+                deployer,
+                managerAddress
+            ],
+        });
+        await hre.run("verify:verify",{
+            address: firstEvent.address,
+            constructorArguments: [
+                deployer
+            ],
+        });
+    }
 };
 
-export default deployTitanNFT;
-deployTitanNFT.tags = [
-    'TitanNFT'
+export default deployL2;
+deployL2.tags = [
+    'TitanNFT_deploy'
 ];
