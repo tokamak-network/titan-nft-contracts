@@ -6,13 +6,13 @@ const nftJson = require("../artifacts/contracts/TitanNFT.sol/TitanNFT.json")
 
 // for titangoerli
 // const ownerAddress = '0xc1eba383D94c6021160042491A5dfaF1d82694E6'
-const nftAddress = '0xA9108BBcdF8B16DAA3f1c4E8457219a9ED601213'
-const eventAddress = '0x0ED0B62c1F2C1C30c40fFDd32338F57A4d4C9213'
+// const nftAddress = '0xA9108BBcdF8B16DAA3f1c4E8457219a9ED601213'
+// const eventAddress = '0x0ED0B62c1F2C1C30c40fFDd32338F57A4d4C9213'
 
 // for titan
 // const ownerAddress = ''
-// const nftAddress = ''
-// const eventAddress = ''
+const nftAddress = '0x33Ca9E08b04E20eF3Beef4D77b18D8D4323FFf10'
+const eventAddress = '0x40A2A6c340D952ee96BFc243CF1BdeF9aa4e24AE'
 
 
 function getAttributeOfGrade(grade) {
@@ -30,7 +30,7 @@ function readData(data) {
   let attributes = [];
 
   let ret = {tokenIds: null, attributes: null}
-  for (i = 50; i < 100; i++) {
+  for (i = 0; i < 50; i++) {
       var row = rows[i].split(",");
       if(row.length > 7) {
         tokenIds.push(ethers.BigNumber.from(row[0].trim()))

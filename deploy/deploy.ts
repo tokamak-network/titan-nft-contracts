@@ -12,20 +12,23 @@ const deployL2: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
     const { deploy } = hre.deployments;
 
     // titan-goerli
-    let nftTokenInfo = {
-        name: "L2 Titan NFTs",
-        symbol: "TITAN",
-        baseURI: "http://titan-nft.tokamak.network/titangoerli-metadata/",
-        priceToken : tonAddress,
-        priceAmount : hre.ethers.utils.parseEther("30")
-    }
-
-    // titan
-    // const nftTokenInfo = {
+    // let nftTokenInfo = {
     //     name: "L2 Titan NFTs",
     //     symbol: "TITAN",
-    //     baseURI: "http://titan-nft.tokamak.network/titan-metadata/"
+    //     baseURI: "http://titan-nft.tokamak.network/titangoerli-metadata/",
+    //     priceToken : tonAddress,
+    //     priceAmount : hre.ethers.utils.parseEther("30")
     // }
+
+    // titan
+    const nftTokenInfo = {
+        name: "L2 Titan NFTs",
+        symbol: "TITAN",
+        baseURI: "http://titan-nft.tokamak.network/titan-metadata/",
+        priceToken : tonAddress,
+        priceAmount : hre.ethers.utils.parseEther("30"),
+        startSaleTime: hre.ethers.BigNumber.from("1692259200")
+    }
 
     const deploySigner = await hre.ethers.getSigner(deployer);
     const managerSigner = await hre.ethers.getSigner(managerAddress);
@@ -105,6 +108,14 @@ const deployL2: DeployFunction = async function (hre: HardhatRuntimeEnvironment)
             nftTokenInfo.priceToken,
             nftTokenInfo.priceAmount
         )).wait()
+    }
+
+    //==== setStartTime =================================
+    let startTime = await firstEvent.startTime()
+     if (startTime != nftTokenInfo.startSaleTime) {
+         await (await firstEvent.connect(deploySigner).setStartTime(
+            nftTokenInfo.startSaleTime
+         )).wait()
     }
 
     //==== verify =================================
